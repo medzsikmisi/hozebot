@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
+import 'package:tuple/tuple.dart';
 
 class DataManager {
   static void init({bool testMode = false}) {
@@ -68,5 +71,17 @@ class DataManager {
         Logger('DataManager').log(Level.INFO, 'Rank updated ($userId,$rank)');
       }
     }
+  }
+
+  Future<List<Tuple2<int, int>>> getRankList({required int guildId}) async {
+    final ranklist = <Tuple2<int, int>>[];
+    await _checkBox(guildId.toString());
+    final box = Hive.box(guildId.toString());
+    if (box.isEmpty) return [];
+    for (var key in box.keys) {
+      ranklist.add(Tuple2(key, box.get(key)['max_rank']));
+    }
+    ranklist.sort((_, __) => __.item2.compareTo(_.item2));
+    return ranklist.getRange(0, min(10,ranklist.length)).toList();
   }
 }

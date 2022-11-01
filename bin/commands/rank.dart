@@ -1,6 +1,7 @@
 import 'package:logging/logging.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
+import 'package:tuple/tuple.dart';
 
 import '../errors.dart';
 import '../utils/hoze.dart';
@@ -41,7 +42,7 @@ class RankCommand extends SlashCommandBuilder {
       Logger('RankCommand').log(Level.INFO, 'Rank command called on bot.');
       return;
     }
-    e.respond(Postman.getEmbed('Getting rank for $name'));
+    e.respond(Postman.getEmbed('Getting rank for $name...'));
     try {
       final rank = await RankManager().getRank(userId, guildId);
       e.getOriginalResponse().then(
@@ -52,7 +53,7 @@ class RankCommand extends SlashCommandBuilder {
         final nextRankString =
             "${nextRank.year}.${nextRank.month}.${nextRank.day} ${nextRank.hour}:${nextRank.minute}:${nextRank.second}";
         e.getOriginalResponse().then((value) =>
-            value.edit(Postman.getEmbed('Try again after $nextRankString')));
+            value.edit(Postman.getEmbed('Try again after $nextRankString.')));
       }
       Postman.sendError(e);
     }

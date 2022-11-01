@@ -5,6 +5,7 @@ import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../commands/ping.dart';
 import '../commands/rank.dart';
+import '../commands/ranklist.dart';
 import 'data_manager.dart';
 
 class Hoze {
@@ -30,6 +31,7 @@ class Hoze {
     IInteractions.create(WebsocketInteractionBackend(_bot!))
       ..registerSlashCommand(PingCommand())
       ..registerSlashCommand(RankCommand())
+      ..registerSlashCommand(RanklistCommand())
       ..syncOnReady();
   }
 }
