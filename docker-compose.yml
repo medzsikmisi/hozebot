@@ -1,0 +1,12 @@
+version: '3'
+services:
+  hozebot:
+    build: .
+    environment:
+      DC_TOKEN: ODk2ODIzOTcyMDE0OTgxMTgx.GSSAwn.CLPitE1TUyehtnEabRApZDZkgyclr0wT3-WzYA
+    volumes:
+      - ./hozedata:/root/hozedata
+
+
+volumes:
+  hozedata:
