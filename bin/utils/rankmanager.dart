@@ -5,7 +5,7 @@ import '../errors.dart';
 import 'data_manager.dart';
 
 class RankManager {
-  Future<int> getRank(String userId, int guildId,String tag) async {
+  Future<int> getRank(String userId, int guildId, String tag) async {
     final dm = DataManager();
     final canRank = await dm.canRank(guildId: guildId, userId: userId);
     if (canRank is DateTime) {
@@ -16,7 +16,7 @@ class RankManager {
     if (rank == null) throw RankError();
     Future.delayed(Duration.zero, () {
       try {
-        dm.registerRank(userId: userId, guildId: guildId, rank: rank,tag:tag);
+        dm.registerRank(userId: userId, guildId: guildId, rank: rank, tag: tag);
         dm.incrementRankCounter(guildId: guildId);
       } catch (e) {
         Logger('RankManager')
@@ -56,6 +56,11 @@ class RankManager {
       rank = Xrandom().nextInt((maxRank * 0.3).floor());
     } else {
       rank = Xrandom().nextInt((maxRank * 0.15).floor());
+    }
+    if (rank > 30) {
+      if (Xrandom().nextBool()) {
+        rank = calculateRank(rankCounter: rankCounter);
+      }
     }
     Logger('RankManager').log(Level.INFO, 'New rank: $rank');
     return rank;
