@@ -3,7 +3,7 @@ services:
   hozebot:
     build: .
     environment:
-      DC_TOKEN: ODk2ODIzOTcyMDE0OTgxMTgx.GSSAwn.CLPitE1TUyehtnEabRApZDZkgyclr0wT3-WzYA
+      DC_TOKEN: ODk2ODIzOTcyMDE0OTgxMTgx.G_z27n.x4Duz_XTtTnysdVoHO03t_5ZlwfUfQU9Gn10Ok
     volumes:
       - ./hozedata:/root/hozedata
 

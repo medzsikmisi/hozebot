@@ -5,10 +5,10 @@ import 'package:logging/logging.dart';
 import 'package:tuple/tuple.dart';
 
 class DataManager {
-  static void init({bool testMode = false}) {
+  static Future<void> init({bool testMode = false}) async {
     Hive.init('/root/hozedata');
     if (testMode) {
-      Hive.deleteFromDisk();
+      await Hive.deleteFromDisk();
     }
   }
 
@@ -35,7 +35,7 @@ class DataManager {
     }
   }
 
-  Future<dynamic> canRank({required int guildId, required int userId}) async {
+  Future<dynamic> canRank({required int guildId, required String userId}) async {
     await _checkBox(guildId.toString());
     final box = Hive.box(guildId.toString());
     if (box.isEmpty) return true;
@@ -51,13 +51,16 @@ class DataManager {
   }
 
   Future<void> registerRank(
-      {required int userId, required int guildId, required int rank}) async {
+      {required String userId,
+      required int guildId,
+      required int rank,
+      required String tag}) async {
     final guild = guildId.toString();
     await _checkBox(guild);
     final box = Hive.box(guild);
     final nextRank = DateTime.now().add(Duration(minutes: 30));
     if (!box.containsKey(userId)) {
-      box.put(userId, {'next_rank': nextRank, 'max_rank': rank});
+      box.put(userId, {'next_rank': nextRank, 'max_rank': rank, 'tag': tag});
     } else {
       Map user = box.get(userId);
       final maxRank = user['max_rank'];
@@ -73,15 +76,15 @@ class DataManager {
     }
   }
 
-  Future<List<Tuple2<int, int>>> getRankList({required int guildId}) async {
-    final ranklist = <Tuple2<int, int>>[];
+  Future<List<Tuple2<String, int>>> getRankList({required int guildId}) async {
+    final ranklist = <Tuple2<String, int>>[];
     await _checkBox(guildId.toString());
     final box = Hive.box(guildId.toString());
     if (box.isEmpty) return [];
     for (var key in box.keys) {
-      ranklist.add(Tuple2(key, box.get(key)['max_rank']));
+      ranklist.add(Tuple2(box.get(key)['tag'], box.get(key)['max_rank']));
     }
     ranklist.sort((_, __) => __.item2.compareTo(_.item2));
-    return ranklist.getRange(0, min(10,ranklist.length)).toList();
+    return ranklist.getRange(0, min(10, ranklist.length)).toList();
   }
 }

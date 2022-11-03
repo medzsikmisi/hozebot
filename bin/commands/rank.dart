@@ -1,7 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
-import 'package:tuple/tuple.dart';
 
 import '../errors.dart';
 import '../utils/hoze.dart';
@@ -19,14 +18,19 @@ class RankCommand extends SlashCommandBuilder {
 
   handle(ISlashCommandInteractionEvent e) async {
     final guildId = e.interaction.guild!.id.id;
-    int? userId;
+    String? userId;
     String? name;
+    String? tag;
     if (e.args.isEmpty) {
-      userId = e.interaction.memberAuthor?.id.id;
-      name = e.interaction.memberAuthor?.nickname;
+      userId = e.interaction.userAuthor!.id.id.toString();
+      name = e.interaction.memberAuthor!.nickname;
+      tag = e.interaction.userAuthor!.tag;
+      print('id: $userId');
     } else if (e.args.length == 1) {
-      userId = int.tryParse(e.args.first.value);
-      name = await fetchUserName(userId!, e.interaction.guild!.id);
+      userId = e.args.first.value;
+      final member = await fetchMember(userId!, e.interaction.guild!.id);
+      tag = (await member!.user.getOrDownload()).tag;
+      name = member.nickname;
     } else {
       Postman.sendError(e);
       Logger('RankCommand').log(Level.SHOUT,
@@ -44,12 +48,12 @@ class RankCommand extends SlashCommandBuilder {
     }
     e.respond(Postman.getEmbed('Getting rank for $name...'));
     try {
-      final rank = await RankManager().getRank(userId, guildId);
+      final rank = await RankManager().getRank(userId, guildId, tag);
       e.getOriginalResponse().then(
           (value) => value.edit(Postman.getEmbed("$name's rank is $rank.")));
     } catch (err) {
       if (err is CannotRankError) {
-        final nextRank = err.nextRank;
+        final nextRank = err.nextRank.toLocal();
         final nextRankString =
             "${nextRank.year}.${nextRank.month}.${nextRank.day} ${nextRank.hour}:${nextRank.minute}:${nextRank.second}";
         e.getOriginalResponse().then((value) =>
@@ -59,14 +63,14 @@ class RankCommand extends SlashCommandBuilder {
     }
   }
 
-  Future<String?> fetchUserName(int id, Snowflake guildId) async {
+  Future<IMember?> fetchMember(String id, Snowflake guildId) async {
     final instance = Hoze.getInstance();
     final guild = await instance.fetchGuild(guildId);
     final member = await guild.fetchMember(Snowflake(id));
-    return member.nickname;
+    return member;
   }
 
-  Future<bool> checkIfBot(int id, ISlashCommandInteractionEvent e) async {
+  Future<bool> checkIfBot(String id, ISlashCommandInteractionEvent e) async {
     final botInstance = Hoze.getInstance();
     final user = await botInstance.fetchUser(Snowflake(id));
     if (user.bot == true) {

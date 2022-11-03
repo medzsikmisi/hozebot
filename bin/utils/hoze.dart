@@ -14,7 +14,7 @@ class Hoze {
   static INyxxWebsocket getInstance() => _bot!;
 
   static Future<void> rise() async {
-    DataManager.init(testMode: true);
+    await DataManager.init();
     final token = Platform.environment['DC_TOKEN'].toString();
     _bot =
         NyxxFactory.createNyxxWebsocket(token, GatewayIntents.allUnprivileged)

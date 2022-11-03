@@ -6,4 +6,4 @@ COPY pubspec.* .
 RUN dart pub get
 COPY . .
 RUN dart pub get --offline
-ENTRYPOINT sleep 2 && dart  ./bin/hozebot.dart
+ENTRYPOINT  dart  ./bin/hozebot.dart
