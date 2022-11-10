@@ -4,6 +4,8 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../commands/avatar.dart';
+import '../commands/headOrTail/head.dart';
+import '../commands/headOrTail/tail.dart';
 import '../commands/ping.dart';
 import '../commands/rank.dart';
 import '../commands/ranklist.dart';
@@ -34,6 +36,8 @@ class Hoze {
       ..registerSlashCommand(RankCommand())
       ..registerSlashCommand(RanklistCommand())
       ..registerSlashCommand(AvatarCommand())
+      ..registerSlashCommand(HeadCommand())
+      ..registerSlashCommand(TailCommand())
       ..syncOnReady();
   }
 }
