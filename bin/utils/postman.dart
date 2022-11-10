@@ -36,13 +36,13 @@ class Postman {
     return getEmbed('An error occurred. Try again later. 😒', error: true);
   }
 
-  static void sendPictureFromUrl(ISlashCommandInteractionEvent e, String? url,
-      {String? title}) {
+  static Future<void> sendPictureFromUrl(ISlashCommandInteractionEvent e, String? url,
+      {String? title}) async{
     final embed = EmbedBuilder();
     embed.color = DiscordColor.fromHexString('#e7c97b');
     embed.title = title;
     embed.imageUrl = url;
-    e
+    await e
         .getOriginalResponse()
         .then((value) => value.edit(MessageBuilder.embed(embed)));
   }

@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
@@ -15,23 +16,30 @@ class AvatarCommand extends DiscordCommand {
 
   @override
   handle(ISlashCommandInteractionEvent e) async {
-    e.respond(Postman.getEmbed('One sec...'));
+    Future.delayed(Duration.zero, () async {
+      await e.respond(Postman.getEmbed('One sec...'));
+    });
     IMember user;
     if (e.args.isEmpty) {
       user = e.interaction.memberAuthor!;
-      return;
     } else {
-      final userId = e.getArg('user').value;
+      final String? userId = e.getArg('user').value;
       if (userId == null) {
         Postman.sendError(e);
         return;
       }
-      user = await (await e.interaction.guild!.getOrDownload())
-          .fetchMember(userId);
+      final guild = await e.interaction.guild!.getOrDownload();
+      user = await guild.fetchMember(Snowflake(userId));
     }
     String username =
         user.nickname ?? (await user.user.getOrDownload()).username;
-    Postman.sendPictureFromUrl(e, user.avatarURL(),
+    String? avatarUrl = user.avatarURL();
+    if (avatarUrl == null) {
+      final globalUser = await user.user.getOrDownload();
+      avatarUrl = globalUser.avatarURL(size: 1024);
+    }
+    Logger('AvatarCommand').log(Level.INFO, 'avatarUrl:$avatarUrl');
+    await Postman.sendPictureFromUrl(e, avatarUrl,
         title: '$username\'s avatar:');
   }
 }
