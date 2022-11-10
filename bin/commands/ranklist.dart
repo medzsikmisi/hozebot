@@ -2,12 +2,14 @@ import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../utils/data_manager.dart';
 import '../utils/postman.dart';
+import 'command.dart';
 
-class RanklistCommand extends SlashCommandBuilder {
+class RanklistCommand extends DiscordCommand {
   RanklistCommand() : super('ranklist', 'Get the top 10 ranks.', []) {
     registerHandler(handle);
   }
 
+  @override
   handle(ISlashCommandInteractionEvent e) async {
     final guildId = e.interaction.guild!.id.id;
     final ranklist = await DataManager().getRankList(guildId: guildId);

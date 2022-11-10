@@ -35,7 +35,8 @@ class DataManager {
     }
   }
 
-  Future<dynamic> canRank({required int guildId, required String userId}) async {
+  Future<dynamic> canRank(
+      {required int guildId, required String userId}) async {
     await _checkBox(guildId.toString());
     final box = Hive.box(guildId.toString());
     if (box.isEmpty) return true;
@@ -58,21 +59,19 @@ class DataManager {
     final guild = guildId.toString();
     await _checkBox(guild);
     final box = Hive.box(guild);
-    final nextRank = DateTime.now().add(Duration(minutes: 30));
+    final nextRank = DateTime.now().toLocal().add(Duration(minutes: 30));
     if (!box.containsKey(userId)) {
       box.put(userId, {'next_rank': nextRank, 'max_rank': rank, 'tag': tag});
     } else {
       Map user = box.get(userId);
-      final maxRank = user['max_rank'];
+      final int maxRank = user['max_rank'];
       if (maxRank >= rank) {
         Logger('DataManager').log(Level.INFO, 'No rank update needed');
-        return;
-      } else {
-        user['max_rank'] = rank;
-        user['next_rank'] = nextRank;
-        box.put(userId, user);
-        Logger('DataManager').log(Level.INFO, 'Rank updated ($userId,$rank)');
       }
+      user['max_rank'] = max(rank, maxRank);
+      user['next_rank'] = nextRank;
+      box.put(userId, user);
+      Logger('DataManager').log(Level.INFO, 'Rank updated ($userId,$rank)');
     }
   }
 
@@ -82,7 +81,7 @@ class DataManager {
     final box = Hive.box(guildId.toString());
     if (box.isEmpty) return [];
     for (var key in box.keys) {
-      ranklist.add(Tuple2(box.get(key)['tag'], box.get(key)['max_rank']));
+      ranklist.add(Tuple2(key, box.get(key)['max_rank']));
     }
     ranklist.sort((_, __) => __.item2.compareTo(_.item2));
     return ranklist.getRange(0, min(10, ranklist.length)).toList();

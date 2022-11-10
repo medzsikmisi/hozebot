@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
+import '../commands/avatar.dart';
 import '../commands/ping.dart';
 import '../commands/rank.dart';
 import '../commands/ranklist.dart';
@@ -32,6 +33,7 @@ class Hoze {
       ..registerSlashCommand(PingCommand())
       ..registerSlashCommand(RankCommand())
       ..registerSlashCommand(RanklistCommand())
+      ..registerSlashCommand(AvatarCommand())
       ..syncOnReady();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:logging/logging.dart';
 import 'package:xrandom/xrandom.dart';
-
 import '../errors.dart';
 import 'data_manager.dart';
 
@@ -14,10 +13,11 @@ class RankManager {
 
     final rank = await _requestRank(userId, guildId);
     if (rank == null) throw RankError();
-    Future.delayed(Duration.zero, () {
+    await Future.delayed(Duration.zero, () async {
       try {
-        dm.registerRank(userId: userId, guildId: guildId, rank: rank, tag: tag);
-        dm.incrementRankCounter(guildId: guildId);
+        await dm.registerRank(
+            userId: userId, guildId: guildId, rank: rank, tag: tag);
+        await dm.incrementRankCounter(guildId: guildId);
       } catch (e) {
         Logger('RankManager')
           ..log(
@@ -46,19 +46,21 @@ class RankManager {
     int? rank;
     if (range == 10000) {
       return maxRank;
-    } else if (range > 9000) {
+    } else if (range > 9800) {
       rank = Xrandom().nextInt((maxRank * 0.8).floor());
-    } else if (range > 8500) {
+    } else if (range > 9300) {
       rank = Xrandom().nextInt((maxRank * 0.75).floor());
-    } else if (range > 7000) {
+    } else if (range > 8500) {
       rank = Xrandom().nextInt((maxRank * 0.5).floor());
-    } else if (range > 6000) {
+    } else if (range > 7500) {
       rank = Xrandom().nextInt((maxRank * 0.3).floor());
     } else {
       rank = Xrandom().nextInt((maxRank * 0.15).floor());
     }
     if (rank > 30) {
-      if (Xrandom().nextBool()) {
+      final bool1 = Xrandom().nextBool();
+      final bool2 = Xrandom().nextBool();
+      if (bool1 || bool2) {
         rank = calculateRank(rankCounter: rankCounter);
       }
     }

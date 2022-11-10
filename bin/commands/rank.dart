@@ -6,8 +6,9 @@ import '../errors.dart';
 import '../utils/hoze.dart';
 import '../utils/postman.dart';
 import '../utils/rankmanager.dart';
+import 'command.dart';
 
-class RankCommand extends SlashCommandBuilder {
+class RankCommand extends DiscordCommand {
   RankCommand()
       : super('rank', 'Get a rank bro.', [
           CommandOptionBuilder(CommandOptionType.user, 'user',
@@ -16,6 +17,7 @@ class RankCommand extends SlashCommandBuilder {
     registerHandler(handle);
   }
 
+  @override
   handle(ISlashCommandInteractionEvent e) async {
     final guildId = e.interaction.guild!.id.id;
     String? userId;
@@ -25,12 +27,12 @@ class RankCommand extends SlashCommandBuilder {
       userId = e.interaction.userAuthor!.id.id.toString();
       name = e.interaction.memberAuthor!.nickname;
       tag = e.interaction.userAuthor!.tag;
-      print('id: $userId');
     } else if (e.args.length == 1) {
       userId = e.args.first.value;
       final member = await fetchMember(userId!, e.interaction.guild!.id);
       tag = (await member!.user.getOrDownload()).tag;
       name = member.nickname;
+      name ??= (await member.user.getOrDownload()).username;
     } else {
       Postman.sendError(e);
       Logger('RankCommand').log(Level.SHOUT,
@@ -55,7 +57,7 @@ class RankCommand extends SlashCommandBuilder {
       if (err is CannotRankError) {
         final nextRank = err.nextRank.toLocal();
         final nextRankString =
-            "${nextRank.year}.${nextRank.month}.${nextRank.day} ${nextRank.hour}:${nextRank.minute}:${nextRank.second}";
+            "${nextRank.year}.${nextRank.month}.${nextRank.day} ${nextRank.hour == 23 ? '00' : nextRank.hour + 1}:${nextRank.minute}:${nextRank.second}";
         e.getOriginalResponse().then((value) =>
             value.edit(Postman.getEmbed('Try again after $nextRankString.')));
       }
