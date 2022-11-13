@@ -56,8 +56,14 @@ class RankCommand extends DiscordCommand {
     } catch (err) {
       if (err is CannotRankError) {
         final nextRank = err.nextRank.toLocal();
+        String rankHour = (nextRank.hour==23?'00':nextRank.hour+1).toString();
+        if(rankHour.length==1)rankHour = "0$rankHour";
+        String rankMinute = nextRank.minute.toString();
+        if(rankHour.length==1)rankHour = "0$rankMinute";
+        String rankSecond = nextRank.second.toString();
+        if(rankHour.length==1)rankHour = "0$rankSecond";
         final nextRankString =
-            "${nextRank.year}.${nextRank.month}.${nextRank.day} ${nextRank.hour == 23 ? '00' : nextRank.hour + 1}:${nextRank.minute}:${nextRank.second}";
+            "${nextRank.year}.${nextRank.month}.${nextRank.day} $rankHour:$rankMinute:$rankSecond";
         e.getOriginalResponse().then((value) =>
             value.edit(Postman.getEmbed('Try again after $nextRankString.')));
       }
