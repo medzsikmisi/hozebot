@@ -12,21 +12,20 @@ class DataManager {
     }
   }
 
-  Future<void> _checkBox(String boxName) async {
+  Future<Box> _checkBox(String boxName) async {
     if (!Hive.isBoxOpen(boxName)) {
       await Hive.openBox(boxName);
     }
+    return Hive.box(boxName);
   }
 
   Future<int> getRankCounter({required int guildId}) async {
-    await _checkBox('rank_counters');
-    final box = Hive.box('rank_counters');
+    final box = await _checkBox('rank_counters');
     return box.get(guildId, defaultValue: 0);
   }
 
   Future<void> incrementRankCounter({required int guildId}) async {
-    await _checkBox('rank_counters');
-    final box = Hive.box('rank_counters');
+    final box = await _checkBox('rank_counters');
     if (!box.containsKey(guildId)) {
       box.put(guildId, 1);
     } else {
@@ -37,8 +36,7 @@ class DataManager {
 
   Future<dynamic> canRank(
       {required int guildId, required String userId}) async {
-    await _checkBox(guildId.toString());
-    final box = Hive.box(guildId.toString());
+    final box = await _checkBox(guildId.toString());
     if (box.isEmpty) return true;
     final Map user = box.get(userId, defaultValue: {});
     if (user.isEmpty) return true;
@@ -57,8 +55,7 @@ class DataManager {
       required int rank,
       required String tag}) async {
     final guild = guildId.toString();
-    await _checkBox(guild);
-    final box = Hive.box(guild);
+    final box = await _checkBox(guild);
     final nextRank = DateTime.now().toLocal().add(Duration(minutes: 30));
     if (!box.containsKey(userId)) {
       box.put(userId, {'next_rank': nextRank, 'max_rank': rank, 'tag': tag});
@@ -77,13 +74,23 @@ class DataManager {
 
   Future<List<Tuple2<String, int>>> getRankList({required int guildId}) async {
     final ranklist = <Tuple2<String, int>>[];
-    await _checkBox(guildId.toString());
-    final box = Hive.box(guildId.toString());
+    final box = await _checkBox(guildId.toString());
     if (box.isEmpty) return [];
     for (var key in box.keys) {
       ranklist.add(Tuple2(key, box.get(key)['max_rank']));
     }
     ranklist.sort((_, __) => __.item2.compareTo(_.item2));
     return ranklist.getRange(0, min(10, ranklist.length)).toList();
+  }
+
+  Future<void> reduceRankTime(
+      String userId, int guildId, Duration duration) async {
+    final box = await _checkBox(guildId.toString());
+    if (!box.containsKey(userId)) return;
+    Map userData = box.get(userId, defaultValue: {});
+    if (userData.isEmpty) return;
+    final DateTime nextRank = userData['next_rank'];
+    userData['next_rank'] = nextRank.subtract(duration);
+    await box.put(userId, userData);
   }
 }

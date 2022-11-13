@@ -1,5 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:xrandom/xrandom.dart';
+
 import '../errors.dart';
 import 'data_manager.dart';
 
@@ -36,6 +37,12 @@ class RankManager {
       Logger('RankManager').log(Level.SHOUT, e.toString());
       return null;
     }
+  }
+
+  Future<void> reduceRankTime(String userId, int guildId, {int? s}) {
+    final seconds = s ?? Xrandom().nextInt(3);
+    return DataManager()
+        .reduceRankTime(userId, guildId, Duration(seconds: seconds));
   }
 
   ///  This method calculates a rank. The higher number has less chance.
