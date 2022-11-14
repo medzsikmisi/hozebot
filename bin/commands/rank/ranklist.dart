@@ -5,7 +5,7 @@ import '../../utils/postman.dart';
 import '../command.dart';
 
 class RanklistCommand extends DiscordCommand {
-  RanklistCommand() : super('ranklist', 'Get the top 10 ranks.', []) {
+  RanklistCommand() : super('leaderboard', 'Get the top 10 ranks.', []) {
     registerHandler(handle);
   }
 
