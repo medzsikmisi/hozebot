@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../commands/tools/avatar.dart';
 import '../commands/headOrTail/head.dart';
 import '../commands/headOrTail/tail.dart';
-import '../commands/tools/ping.dart';
+import '../commands/rank/maxrank.dart';
 import '../commands/rank/rank.dart';
 import '../commands/rank/ranklist.dart';
+import '../commands/tools/avatar.dart';
+import '../commands/tools/ping.dart';
+import '../commands/zumi/zumijoin.dart';
 import 'data_manager.dart';
 
 class Hoze {
@@ -38,6 +40,8 @@ class Hoze {
       ..registerSlashCommand(AvatarCommand())
       ..registerSlashCommand(HeadCommand())
       ..registerSlashCommand(TailCommand())
+      ..registerSlashCommand(MaxRankRommand())
+      ..registerSlashCommand(JoinCommand())
       ..syncOnReady();
   }
 }
