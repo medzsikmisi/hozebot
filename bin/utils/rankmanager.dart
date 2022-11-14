@@ -40,7 +40,7 @@ class RankManager {
   }
 
   Future<void> reduceRankTime(String userId, int guildId, {int? s}) {
-    final seconds = s ?? Xrandom().nextInt(3);
+    final seconds = s ?? Xrandom().nextInt(15);
     return DataManager()
         .reduceRankTime(userId, guildId, Duration(seconds: seconds));
   }
