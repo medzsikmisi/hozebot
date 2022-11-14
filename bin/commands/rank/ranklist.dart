@@ -1,8 +1,8 @@
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../utils/data_manager.dart';
-import '../utils/postman.dart';
-import 'command.dart';
+import '../../utils/data_manager.dart';
+import '../../utils/postman.dart';
+import '../command.dart';
 
 class RanklistCommand extends DiscordCommand {
   RanklistCommand() : super('ranklist', 'Get the top 10 ranks.', []) {

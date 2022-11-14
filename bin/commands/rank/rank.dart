@@ -2,11 +2,11 @@ import 'package:logging/logging.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../errors.dart';
-import '../utils/hoze.dart';
-import '../utils/postman.dart';
-import '../utils/rankmanager.dart';
-import 'command.dart';
+import '../../errors.dart';
+import '../../utils/hoze.dart';
+import '../../utils/postman.dart';
+import '../../utils/rankmanager.dart';
+import '../command.dart';
 
 class RankCommand extends DiscordCommand {
   RankCommand()

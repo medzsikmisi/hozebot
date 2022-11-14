@@ -2,8 +2,8 @@ import 'package:logging/logging.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../utils/postman.dart';
-import 'command.dart';
+import '../../utils/postman.dart';
+import '../command.dart';
 
 class AvatarCommand extends DiscordCommand {
   AvatarCommand()

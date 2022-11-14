@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../commands/avatar.dart';
+import '../commands/tools/avatar.dart';
 import '../commands/headOrTail/head.dart';
 import '../commands/headOrTail/tail.dart';
-import '../commands/ping.dart';
-import '../commands/rank.dart';
-import '../commands/ranklist.dart';
+import '../commands/tools/ping.dart';
+import '../commands/rank/rank.dart';
+import '../commands/rank/ranklist.dart';
 import 'data_manager.dart';
 
 class Hoze {

@@ -1,7 +1,6 @@
-import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../utils/postman.dart';
+import '../../utils/postman.dart';
 
 class ColorTestCommand extends SlashCommandBuilder {
   ColorTestCommand()
