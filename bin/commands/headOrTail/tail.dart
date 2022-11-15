@@ -15,7 +15,7 @@ class TailCommand extends DiscordCommand {
     final result = HeadsOrTailsManager().play(HeadsOrTails.tail);
     Future.delayed(Duration(seconds: 1), () {
       e.respond(Postman.getEmbed('You ${result ? "won.🫡" : "lost. 🙄"}',
-          title: "It's ${result ? 'tail' : 'head'}."));
+          title: "It's ${result ? 'tail' : 'head'}.")).timeout(Duration(minutes: 1));
       if (result) {
         final userId = e.interaction.memberAuthor!.id.toString();
         final guildId = e.interaction.guild!.id.id;

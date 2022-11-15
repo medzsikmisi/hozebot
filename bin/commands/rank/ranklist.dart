@@ -25,6 +25,6 @@ class RanklistCommand extends DiscordCommand {
       i++;
     }
     e.respond(Postman.getEmbed(displayedRanklist.join('\n'),
-        title: '**Ranklist 🏆**'));
+        title: '**Ranklist 🏆**')).timeout(Duration(minutes: 5));
   }
 }

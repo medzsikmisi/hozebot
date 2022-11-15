@@ -29,7 +29,7 @@ class Postman {
   }
 
   static void sendError(ISlashCommandInteractionEvent e) {
-    e.respond(getError());
+    e.respond(getError()).timeout(Duration(minutes: 2));
   }
 
   static MessageBuilder getError() {

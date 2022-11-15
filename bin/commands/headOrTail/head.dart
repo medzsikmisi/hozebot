@@ -14,7 +14,7 @@ class HeadCommand extends DiscordCommand{
   handle(ISlashCommandInteractionEvent e) {
   final result = HeadsOrTailsManager().play(HeadsOrTails.head);
   Future.delayed(Duration(seconds: 1),(){
-    e.respond(Postman.getEmbed('You ${result?"won.🫡":"lost. 🙄"}',title: "It's ${result?'head':'tail'}."));
+    e.respond(Postman.getEmbed('You ${result?"won.🫡":"lost. 🙄"}',title: "It's ${result?'head':'tail'}.")).timeout(Duration(minutes: 1));
     if (result) {
       final userId = e.interaction.memberAuthor!.id.toString();
       final guildId = e.interaction.guild!.id.id;
