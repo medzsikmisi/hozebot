@@ -53,10 +53,11 @@ class DataManager {
       {required String userId,
       required int guildId,
       required int rank,
-      required String tag}) async {
+      required String tag,
+      bool hasNitro = false}) async {
     final guild = guildId.toString();
     final box = await _checkBox(guild);
-    final nextRank = DateTime.now().toLocal().add(Duration(minutes: 30));
+    final nextRank = DateTime.now().toLocal().add(Duration(minutes: hasNitro?25:30));
     if (!box.containsKey(userId)) {
       box.put(userId, {'next_rank': nextRank, 'max_rank': rank, 'tag': tag});
     } else {

@@ -21,15 +21,20 @@ class RankCommand extends DiscordCommand {
   handle(ISlashCommandInteractionEvent e) async {
     final guildId = e.interaction.guild!.id.id;
     String? userId;
+    bool? hasNitro;
     String? name;
     String? tag;
     if (e.args.isEmpty) {
       userId = e.interaction.userAuthor!.id.id.toString();
+      hasNitro = (e.interaction.userAuthor!.nitroType?.value as NitroType?) ==
+          NitroType.none;
       name = e.interaction.memberAuthor!.nickname;
       tag = e.interaction.userAuthor!.tag;
     } else if (e.args.length == 1) {
       userId = e.args.first.value;
       final member = await fetchMember(userId!, e.interaction.guild!.id);
+      hasNitro =
+          (await member?.user.getOrDownload())?.nitroType == NitroType.none;
       tag = (await member!.user.getOrDownload()).tag;
       name = member.nickname;
       name ??= (await member.user.getOrDownload()).username;
@@ -50,18 +55,20 @@ class RankCommand extends DiscordCommand {
     }
     e.respond(Postman.getEmbed('Getting rank for $name...'));
     try {
-      final rank = await RankManager().getRank(userId, guildId, tag);
+      final rank =
+          await RankManager().getRank(userId, guildId, tag, hasNitro: hasNitro);
       e.getOriginalResponse().then(
           (value) => value.edit(Postman.getEmbed("$name's rank is $rank.")));
     } catch (err) {
       if (err is CannotRankError) {
         final nextRank = err.nextRank.toLocal();
-        String rankHour = (nextRank.hour==23?'00':nextRank.hour+1).toString();
-        if(rankHour.length==1)rankHour = "0$rankHour";
+        String rankHour =
+            (nextRank.hour == 23 ? '00' : nextRank.hour + 1).toString();
+        if (rankHour.length == 1) rankHour = "0$rankHour";
         String rankMinute = nextRank.minute.toString();
-        if(rankHour.length==1)rankHour = "0$rankMinute";
+        if (rankHour.length == 1) rankHour = "0$rankMinute";
         String rankSecond = nextRank.second.toString();
-        if(rankHour.length==1)rankHour = "0$rankSecond";
+        if (rankHour.length == 1) rankHour = "0$rankSecond";
         final nextRankString =
             "${nextRank.year}.${nextRank.month}.${nextRank.day} $rankHour:$rankMinute:$rankSecond";
         e.getOriginalResponse().then((value) =>
