@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:cron/cron.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
@@ -18,8 +20,12 @@ class Hoze {
 
   static INyxxWebsocket getInstance() => _bot!;
 
-  static Future<void> rise() async {
+  //TODO implement cron
+  static Cron cron = Cron();
+
+  Future<void> rise() async {
     await DataManager.init();
+
     final token = Platform.environment['DC_TOKEN'].toString();
     _bot =
         NyxxFactory.createNyxxWebsocket(token, GatewayIntents.allUnprivileged)
@@ -43,5 +49,9 @@ class Hoze {
       ..registerSlashCommand(MaxRankRommand())
       ..registerSlashCommand(JoinCommand())
       ..syncOnReady();
+  }
+
+  void addJob(Schedule schedule, Task job) {
+    cron.schedule(schedule, job);
   }
 }
