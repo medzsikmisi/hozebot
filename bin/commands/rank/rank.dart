@@ -61,16 +61,10 @@ class RankCommand extends DiscordCommand {
           (value) => value.edit(Postman.getEmbed("$name's rank is $rank.")));
     } catch (err) {
       if (err is CannotRankError) {
-        final nextRank = err.nextRank.toLocal();
-        String rankHour =
-            (nextRank.hour == 23 ? '00' : nextRank.hour + 1).toString();
-        if (rankHour.length == 1) rankHour = "0$rankHour";
-        String rankMinute = nextRank.minute.toString();
-        if (rankHour.length == 1) rankHour = "0$rankMinute";
-        String rankSecond = nextRank.second.toString();
-        if (rankHour.length == 1) rankHour = "0$rankSecond";
+        final nextRank = err.nextRank.add(Duration(hours: 1));
+
         final nextRankString =
-            "${nextRank.year}.${nextRank.month}.${nextRank.day} $rankHour:$rankMinute:$rankSecond";
+            nextRank.toString().substring(0, nextRank.toString().length - 4);
         e.getOriginalResponse().then((value) =>
             value.edit(Postman.getEmbed('Try again after $nextRankString.')));
       }
@@ -79,14 +73,14 @@ class RankCommand extends DiscordCommand {
   }
 
   Future<IMember?> fetchMember(String id, Snowflake guildId) async {
-    final instance = Hoze.getInstance();
+    final instance = Hoze.instance;
     final guild = await instance.fetchGuild(guildId);
     final member = await guild.fetchMember(Snowflake(id));
     return member;
   }
 
   Future<bool> checkIfBot(String id, ISlashCommandInteractionEvent e) async {
-    final botInstance = Hoze.getInstance();
+    final botInstance = Hoze.instance;
     final user = await botInstance.fetchUser(Snowflake(id));
     if (user.bot == true) {
       e.respond(Postman.getEmbed(

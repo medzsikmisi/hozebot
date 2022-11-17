@@ -7,7 +7,11 @@ class Postman {
   }
 
   static MessageBuilder getEmbed(final String message,
-      {final String? color, final bool error = false, final String? title}) {
+      {final String? color,
+      final bool error = false,
+      final String? title,
+      final String? authorName,
+      final String? authorIconUrl}) {
     final embed = EmbedBuilder();
 
     if (color == null && !error) {
@@ -25,6 +29,12 @@ class Postman {
     embed.description = message;
     if (title != null) embed.title = title;
 
+    if (authorName != null && authorIconUrl != null) {
+      embed.addAuthor((author) {
+        author.name = authorName;
+        author.iconUrl = authorIconUrl;
+      });
+    }
     return MessageBuilder.embed(embed);
   }
 
@@ -35,14 +45,17 @@ class Postman {
   static MessageBuilder getError() {
     return getEmbed('An error occurred. Try again later. 😒', error: true);
   }
-  static getImageEmbed(String url){
+
+  static getImageEmbed(String url) {
     final embed = EmbedBuilder();
-    embed.url=url;
+    embed.url = url;
     embed.color = DiscordColor.fromHexString('#e7c97b');
     return embed;
   }
-  static Future<void> sendPictureFromUrl(ISlashCommandInteractionEvent e, String? url,
-      {String? title}) async{
+
+  static Future<void> sendPictureFromUrl(
+      ISlashCommandInteractionEvent e, String? url,
+      {String? title}) async {
     final embed = EmbedBuilder();
     embed.color = DiscordColor.fromHexString('#e7c97b');
     embed.title = title;

@@ -94,4 +94,7 @@ class DataManager {
     userData['next_rank'] = nextRank.subtract(duration);
     await box.put(userId, userData);
   }
+  Future<Box> getScheduledMessages(){
+    return  _checkBox('message_scheduler');
+  }
 }

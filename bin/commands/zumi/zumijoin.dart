@@ -1,6 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
+import '../../utils/hoze.dart';
 import '../../utils/postman.dart';
 import '../command.dart';
 
@@ -17,7 +18,7 @@ class JoinCommand extends DiscordCommand {
                   CommandOptionType.string, 'neptun', 'Írd be a neptun kódod.',
                   required: true),
             ],
-            guild: Snowflake('753505407904776214')) {
+            guild: Snowflake(Hoze.test?'806667383997333525':'753505407904776214')) {
     registerHandler(handle);
   }
 

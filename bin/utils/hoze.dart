@@ -12,30 +12,37 @@ import '../commands/rank/rank.dart';
 import '../commands/rank/ranklist.dart';
 import '../commands/tools/avatar.dart';
 import '../commands/tools/ping.dart';
+import '../commands/tools/schedule.dart';
 import '../commands/zumi/zumijoin.dart';
 import 'data_manager.dart';
+import 'scheduler.dart';
 
 class Hoze {
+  static const test = false;
+
   static INyxxWebsocket? _bot;
 
-  static INyxxWebsocket getInstance() => _bot!;
+  static INyxxWebsocket get instance => _bot!;
 
-  //TODO implement cron
   static Cron cron = Cron();
 
   Future<void> rise() async {
     await DataManager.init();
-
+    Hoze.cron.schedule(Schedule.parse('* * * * *'), _checkMessages);
     final token = Platform.environment['DC_TOKEN'].toString();
-    _bot =
-        NyxxFactory.createNyxxWebsocket(token, GatewayIntents.allUnprivileged)
-          ..registerPlugin(Logging()) // Default logging plugin
-          ..registerPlugin(
-              CliIntegration()) // Cli integration for nyxx allows stopping application via SIGTERM and SIGKILl
-          ..registerPlugin(
-              IgnoreExceptions()) // Plugin that handles uncaught exceptions that may occur
-          ..connect();
+    _bot = NyxxFactory.createNyxxWebsocket(token, GatewayIntents.all)
+      ..registerPlugin(Logging()) // Default logging plugin
+      ..registerPlugin(
+          CliIntegration()) // Cli integration for nyxx allows stopping application via SIGTERM and SIGKILl
+      ..registerPlugin(
+          IgnoreExceptions()) // Plugin that handles uncaught exceptions that may occur
+      ..connect();
     initCommands();
+  }
+
+  static void die() {
+    _bot?.dispose();
+    exit(0);
   }
 
   static void initCommands() {
@@ -48,8 +55,11 @@ class Hoze {
       ..registerSlashCommand(TailCommand())
       ..registerSlashCommand(MaxRankRommand())
       ..registerSlashCommand(JoinCommand())
+      ..registerSlashCommand(ScheduleCommand())
       ..syncOnReady();
   }
+
+  _checkMessages() => MessageScheduler().checkMessages();
 
   void addJob(Schedule schedule, Task job) {
     cron.schedule(schedule, job);
