@@ -30,7 +30,7 @@ class Hoze {
     await DataManager.init();
     Hoze.cron.schedule(Schedule.parse('* * * * *'), _checkMessages);
     final token = Platform.environment['DC_TOKEN'].toString();
-    _bot = NyxxFactory.createNyxxWebsocket(token, GatewayIntents.all)
+    _bot = NyxxFactory.createNyxxWebsocket(token, GatewayIntents.allUnprivileged)
       ..registerPlugin(Logging()) // Default logging plugin
       ..registerPlugin(
           CliIntegration()) // Cli integration for nyxx allows stopping application via SIGTERM and SIGKILl
