@@ -26,7 +26,7 @@ class RankCommand extends DiscordCommand {
     String? tag;
     if (e.args.isEmpty) {
       userId = e.interaction.userAuthor!.id.id.toString();
-      hasNitro = (e.interaction.userAuthor!.nitroType?.value as NitroType?) ==
+      hasNitro = (e.interaction.userAuthor!.nitroType?.value as NitroType?) !=
           NitroType.none;
       name = e.interaction.memberAuthor!.nickname;
       tag = e.interaction.userAuthor!.tag;
@@ -34,7 +34,7 @@ class RankCommand extends DiscordCommand {
       userId = e.args.first.value;
       final member = await fetchMember(userId!, e.interaction.guild!.id);
       hasNitro =
-          (await member?.user.getOrDownload())?.nitroType == NitroType.none;
+          (await member?.user.getOrDownload())?.nitroType != NitroType.none;
       tag = (await member!.user.getOrDownload()).tag;
       name = member.nickname;
       name ??= (await member.user.getOrDownload()).username;
