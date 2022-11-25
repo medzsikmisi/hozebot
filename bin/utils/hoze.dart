@@ -12,6 +12,7 @@ import '../commands/rank/rank.dart';
 import '../commands/rank/ranklist.dart';
 import '../commands/tools/avatar.dart';
 import '../commands/tools/ping.dart';
+import '../commands/tools/pingpong.dart';
 import '../commands/tools/schedule.dart';
 import '../commands/zumi/zumijoin.dart';
 import 'data_manager.dart';
@@ -47,7 +48,6 @@ class Hoze {
 
   static void initCommands() {
     IInteractions.create(WebsocketInteractionBackend(_bot!))
-      ..registerSlashCommand(PingCommand())
       ..registerSlashCommand(RankCommand())
       ..registerSlashCommand(RanklistCommand())
       ..registerSlashCommand(AvatarCommand())
@@ -56,6 +56,7 @@ class Hoze {
       ..registerSlashCommand(MaxRankRommand())
       ..registerSlashCommand(JoinCommand())
       ..registerSlashCommand(ScheduleCommand())
+      ..registerSlashCommand(PingCommand())
       ..syncOnReady();
   }
 
