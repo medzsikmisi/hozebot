@@ -12,7 +12,6 @@ import '../commands/rank/rank.dart';
 import '../commands/rank/ranklist.dart';
 import '../commands/tools/avatar.dart';
 import '../commands/tools/ping.dart';
-import '../commands/tools/pingpong.dart';
 import '../commands/tools/schedule.dart';
 import '../commands/zumi/zumijoin.dart';
 import 'data_manager.dart';
