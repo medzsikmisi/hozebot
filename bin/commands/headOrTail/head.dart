@@ -5,21 +5,25 @@ import '../../utils/postman.dart';
 import '../../utils/rankmanager.dart';
 import '../command.dart';
 
-class HeadCommand extends DiscordCommand{
-  HeadCommand():super('head','Heads or tails. You choose head.',[]){
+class HeadCommand extends DiscordCommand {
+  HeadCommand() : super('head', 'Heads or tails. You choose head.', []) {
     registerHandler(handle);
-
   }
-@override
+
+  @override
   handle(ISlashCommandInteractionEvent e) {
-  final result = HeadsOrTailsManager().play(HeadsOrTails.head);
-  Future.delayed(Duration(seconds: 1),(){
-    e.respond(Postman.getEmbed('You ${result?"won.🫡":"lost. 🙄"}',title: "It's ${result?'head':'tail'}.")).timeout(Duration(minutes: 1));
-    if (result) {
-      final userId = e.interaction.memberAuthor!.id.toString();
-      final guildId = e.interaction.guild!.id.id;
-      RankManager().reduceRankTime(userId, guildId);
-    }
-  });
+    final result = HeadsOrTailsManager().play(HeadsOrTails.head);
+    Future.delayed(Duration(seconds: 1), () {
+      e
+          .respond(Postman.getEmbed('You ${result ? "won.🫡" : "lost. 🙄"}',
+              title: "It's ${result ? 'head' : 'tail'}."))
+          .then((_) => Future.delayed(
+              Duration(seconds: 15), () => e.deleteOriginalResponse()));
+      if (result) {
+        final userId = e.interaction.memberAuthor!.id.toString();
+        final guildId = e.interaction.guild!.id.id;
+        RankManager().reduceRankTime(userId, guildId);
+      }
+    });
   }
 }

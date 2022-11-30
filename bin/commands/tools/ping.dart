@@ -32,7 +32,7 @@ class PingCommand extends DiscordCommand {
 
             channel.sendMessage(Postman.getMessage('<@$userId>')).then(
                     (_) =>
-                    Future.delayed(Duration(seconds: 10), () => _.delete()));
+                    Future.delayed(Duration(seconds: 30), () => _.delete()));
             await Future.delayed(Duration(seconds: 1));
       }
     });

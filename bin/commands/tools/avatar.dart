@@ -40,6 +40,6 @@ class AvatarCommand extends DiscordCommand {
     }
     Logger('AvatarCommand').log(Level.INFO, 'avatarUrl:$avatarUrl');
     await Postman.sendPictureFromUrl(e, avatarUrl,
-        title: '$username\'s avatar:');
+        title: '$username\'s avatar:',timeout:Duration(minutes: 5));
   }
 }

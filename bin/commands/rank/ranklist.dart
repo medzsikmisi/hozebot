@@ -24,7 +24,10 @@ class RanklistCommand extends DiscordCommand {
           '**$i.** <@${ranklistEntry.item1}> (*${ranklistEntry.item2}*)${i == 1 ? " 👑" : ""}');
       i++;
     }
-    e.respond(Postman.getEmbed(displayedRanklist.join('\n'),
-        title: '**Ranklist 🏆**')).timeout(Duration(minutes: 5));
+    e
+        .respond(Postman.getEmbed(displayedRanklist.join('\n'),
+            title: '**Ranklist 🏆**'))
+        .then((_) => Future.delayed(
+            Duration(minutes: 1), () => e.deleteOriginalResponse()));
   }
 }

@@ -65,8 +65,12 @@ class RankCommand extends DiscordCommand {
 
         final nextRankString =
             nextRank.toString().substring(0, nextRank.toString().length - 4);
-        e.getOriginalResponse().then((value) =>
-            value.edit(Postman.getEmbed('Try again after $nextRankString.')));
+        e
+            .getOriginalResponse()
+            .then((value) => value
+                .edit(Postman.getEmbed('Try again after $nextRankString.')))
+            .then(
+                (_) => Future.delayed(Duration(seconds: 10), () => _.delete()));
       }
       Postman.sendError(e);
     }

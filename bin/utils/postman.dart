@@ -39,7 +39,8 @@ class Postman {
   }
 
   static void sendError(ISlashCommandInteractionEvent e) {
-    e.respond(getError()).timeout(Duration(minutes: 2));
+    e.respond(getError()).then((_) =>
+        Future.delayed(Duration(minutes: 2), () => e.deleteOriginalResponse()));
   }
 
   static MessageBuilder getError() {
@@ -55,7 +56,7 @@ class Postman {
 
   static Future<void> sendPictureFromUrl(
       ISlashCommandInteractionEvent e, String? url,
-      {String? title}) async {
+      {String? title, Duration? timeout}) async {
     final embed = EmbedBuilder();
     embed.color = DiscordColor.fromHexString('#e7c97b');
     embed.title = title;
@@ -63,5 +64,8 @@ class Postman {
     await e
         .getOriginalResponse()
         .then((value) => value.edit(MessageBuilder.embed(embed)));
+    if (timeout != null) {
+      Future.delayed(timeout, () => e.deleteOriginalResponse());
+    }
   }
 }
