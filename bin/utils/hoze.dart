@@ -30,13 +30,14 @@ class Hoze {
     await DataManager.init();
     Hoze.cron.schedule(Schedule.parse('* * * * *'), _checkMessages);
     final token = Platform.environment['DC_TOKEN'].toString();
-    _bot = NyxxFactory.createNyxxWebsocket(token, GatewayIntents.allUnprivileged)
-      ..registerPlugin(Logging()) // Default logging plugin
-      ..registerPlugin(
-          CliIntegration()) // Cli integration for nyxx allows stopping application via SIGTERM and SIGKILl
-      ..registerPlugin(
-          IgnoreExceptions()) // Plugin that handles uncaught exceptions that may occur
-      ..connect();
+    _bot =
+        NyxxFactory.createNyxxWebsocket(token, GatewayIntents.allUnprivileged)
+          ..registerPlugin(Logging()) // Default logging plugin
+          ..registerPlugin(
+              CliIntegration()) // Cli integration for nyxx allows stopping application via SIGTERM and SIGKILl
+          ..registerPlugin(
+              IgnoreExceptions()) // Plugin that handles uncaught exceptions that may occur
+          ..connect();
     initCommands();
   }
 
@@ -56,6 +57,7 @@ class Hoze {
       ..registerSlashCommand(JoinCommand())
       ..registerSlashCommand(ScheduleCommand())
       ..registerSlashCommand(PingCommand())
+      //..registerSlashCommand(SecretSanta())
       ..syncOnReady();
   }
 

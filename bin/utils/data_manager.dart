@@ -28,6 +28,7 @@ class DataManager {
     final box = await _checkBox('rank_counters');
     if (!box.containsKey(guildId)) {
       box.put(guildId, 1);
+      Logger('DataManager').log(Level.INFO, 'No rank counter for guild $guildId, inserting new.');
     } else {
       final currentRankCounter = await getRankCounter(guildId: guildId);
       box.put(guildId, currentRankCounter + 1);
