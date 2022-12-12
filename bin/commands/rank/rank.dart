@@ -26,7 +26,8 @@ class RankCommand extends DiscordCommand {
     String? tag;
     if (e.args.isEmpty) {
       userId = e.interaction.userAuthor!.id.id.toString();
-      hasNitro = (e.interaction.userAuthor!.nitroType?.value as NitroType?) !=
+      hasNitro = ((e.interaction.userAuthor!.nitroType?.value as NitroType?) ??
+              NitroType.none) !=
           NitroType.none;
       name = e.interaction.memberAuthor!.nickname;
       name ??= e.interaction.userAuthor!.username;
