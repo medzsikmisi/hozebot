@@ -57,7 +57,8 @@ class Hoze {
       ..registerSlashCommand(JoinCommand())
       ..registerSlashCommand(ScheduleCommand())
       ..registerSlashCommand(PingCommand())
-      //..registerSlashCommand(SecretSanta())
+      //..registerSlashCommand(JokeCommand())
+      //..registerSlashCommand(DogCommand())
       ..syncOnReady();
   }
 
