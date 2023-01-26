@@ -5,6 +5,7 @@ import 'package:cron/cron.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
+import '../commands/fun/joke.dart';
 import '../commands/headOrTail/head.dart';
 import '../commands/headOrTail/tail.dart';
 import '../commands/rank/maxrank.dart';
@@ -57,7 +58,7 @@ class Hoze {
       ..registerSlashCommand(JoinCommand())
       ..registerSlashCommand(ScheduleCommand())
       ..registerSlashCommand(PingCommand())
-      //..registerSlashCommand(JokeCommand())
+      ..registerSlashCommand(JokeCommand())
       //..registerSlashCommand(DogCommand())
       ..syncOnReady();
   }
