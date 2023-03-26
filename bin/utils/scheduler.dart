@@ -40,11 +40,11 @@ class MessageScheduler {
     final IGuild guild = await bot.fetchGuild(message.guild);
     final authorMember = await guild.fetchMember(message.user);
     String? name = authorMember.nickname;
-    String? avatarUrl = authorMember.avatarURL();
+    String? avatarUrl = authorMember.avatarUrl();
     if (name == null || avatarUrl == null) {
       final authorUser = await bot.fetchUser(message.user);
       name ??= authorUser.username;
-      avatarUrl ??= authorUser.avatarURL();
+      avatarUrl ??= authorUser.avatarUrl();
     }
     dstChannel.sendMessage(Postman.getEmbed(message.message,
         authorName: name, authorIconUrl: avatarUrl));

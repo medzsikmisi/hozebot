@@ -33,10 +33,10 @@ class AvatarCommand extends DiscordCommand {
     }
     String username =
         user.nickname ?? (await user.user.getOrDownload()).username;
-    String? avatarUrl = user.avatarURL();
+    String? avatarUrl = user.avatarUrl();
     if (avatarUrl == null) {
       final globalUser = await user.user.getOrDownload();
-      avatarUrl = globalUser.avatarURL(size: 1024);
+      avatarUrl = globalUser.avatarUrl(size: 1024);
     }
     Logger('AvatarCommand').log(Level.INFO, 'avatarUrl:$avatarUrl');
     await Postman.sendPictureFromUrl(e, avatarUrl,
