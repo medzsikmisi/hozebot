@@ -48,8 +48,7 @@ class Postman {
   }
 
   static getImageEmbed(String url) {
-    final embed = EmbedBuilder();
-    embed.url = url;
+    final embed = EmbedBuilder(imageUrl: url);
     embed.color = DiscordColor.fromHexString('#e7c97b');
     return embed;
   }

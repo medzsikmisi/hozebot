@@ -64,7 +64,7 @@ class RankCommand extends DiscordCommand {
           (value) => value.edit(Postman.getEmbed("$name's rank is $rank.")));
     } catch (err) {
       if (err is CannotRankError) {
-        final nextRank = err.nextRank.add(Duration(hours: 1));
+        final nextRank = err.nextRank;
 
         final nextRankString =
             nextRank.toString().substring(0, nextRank.toString().length - 4);
@@ -73,7 +73,7 @@ class RankCommand extends DiscordCommand {
             .then((value) => value
                 .edit(Postman.getEmbed('Try again after $nextRankString.')))
             .then(
-                (_) => Future.delayed(Duration(seconds: 10), () => _.delete()));
+                (_) => Future.delayed(Duration(seconds: 10), () => e.deleteOriginalResponse()));
       }
       Postman.sendError(e);
     }

@@ -8,6 +8,8 @@ import 'package:nyxx_interactions/nyxx_interactions.dart';
 import '../commands/fun/joke.dart';
 import '../commands/headOrTail/head.dart';
 import '../commands/headOrTail/tail.dart';
+import '../commands/media/cat.dart';
+import '../commands/media/dog.dart';
 import '../commands/rank/maxrank.dart';
 import '../commands/rank/rank.dart';
 import '../commands/rank/ranklist.dart';
@@ -62,7 +64,8 @@ class Hoze {
       ..registerSlashCommand(PingCommand())
       ..registerSlashCommand(JokeCommand())
       ..registerSlashCommand(ResetRanklistCommand())
-      //..registerSlashCommand(DogCommand())
+      ..registerSlashCommand(DogCommand())
+      ..registerSlashCommand(CatCommand())
       ..syncOnReady();
   }
 

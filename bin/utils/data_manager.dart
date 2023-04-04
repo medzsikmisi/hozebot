@@ -63,7 +63,7 @@ class DataManager {
     final guild = guildId.toString();
     final box = await _checkBox(guild);
     final nextRank =
-        DateTime.now().toLocal().add(Duration(minutes: hasNitro ? 25 : 30));
+        DateTime.now().add(Duration(minutes: hasNitro ? 25 : 30));
     if (!box.containsKey(userId)) {
       box.put(userId, {'next_rank': nextRank, 'max_rank': rank, 'tag': tag});
     } else {
