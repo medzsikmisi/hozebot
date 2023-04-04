@@ -12,6 +12,9 @@ class DataManager {
     }
   }
 
+  static Future<void> reset(){
+    return Hive.deleteFromDisk();
+  }
   Future<Box> _checkBox(String boxName) async {
     if (!Hive.isBoxOpen(boxName)) {
       await Hive.openBox(boxName);
@@ -19,16 +22,17 @@ class DataManager {
     return Hive.box(boxName);
   }
 
-  Future<int> getRankCounter({required int guildId}) async {
+  Future<int> getRankCounter({required String guildId}) async {
     final box = await _checkBox('rank_counters');
     return box.get(guildId, defaultValue: 0);
   }
 
-  Future<void> incrementRankCounter({required int guildId}) async {
+  Future<void> incrementRankCounter({required String guildId}) async {
     final box = await _checkBox('rank_counters');
     if (!box.containsKey(guildId)) {
       box.put(guildId, 1);
-      Logger('DataManager').log(Level.INFO, 'No rank counter for guild $guildId, inserting new.');
+      Logger('DataManager').log(
+          Level.INFO, 'No rank counter for guild $guildId, inserting new.');
     } else {
       final currentRankCounter = await getRankCounter(guildId: guildId);
       box.put(guildId, currentRankCounter + 1);
@@ -36,7 +40,7 @@ class DataManager {
   }
 
   Future<dynamic> canRank(
-      {required int guildId, required String userId}) async {
+      {required String guildId, required String userId}) async {
     final box = await _checkBox(guildId.toString());
     if (box.isEmpty) return true;
     final Map user = box.get(userId, defaultValue: {});
@@ -52,13 +56,14 @@ class DataManager {
 
   Future<void> registerRank(
       {required String userId,
-      required int guildId,
+      required String guildId,
       required int rank,
       required String tag,
       bool hasNitro = false}) async {
     final guild = guildId.toString();
     final box = await _checkBox(guild);
-    final nextRank = DateTime.now().toLocal().add(Duration(minutes: hasNitro?25:30));
+    final nextRank =
+        DateTime.now().toLocal().add(Duration(minutes: hasNitro ? 25 : 30));
     if (!box.containsKey(userId)) {
       box.put(userId, {'next_rank': nextRank, 'max_rank': rank, 'tag': tag});
     } else {
@@ -95,7 +100,8 @@ class DataManager {
     userData['next_rank'] = nextRank.subtract(duration);
     await box.put(userId, userData);
   }
-  Future<Box> getScheduledMessages(){
-    return  _checkBox('message_scheduler');
+
+  Future<Box> getScheduledMessages() {
+    return _checkBox('message_scheduler');
   }
 }

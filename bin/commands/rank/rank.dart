@@ -19,7 +19,7 @@ class RankCommand extends DiscordCommand {
 
   @override
   handle(ISlashCommandInteractionEvent e) async {
-    final guildId = e.interaction.guild!.id.id;
+    final guildId = e.interaction.guild!.id.toString();
     String? userId;
     bool? hasNitro;
     String? name;
@@ -56,7 +56,7 @@ class RankCommand extends DiscordCommand {
       Logger('RankCommand').log(Level.INFO, 'Rank command called on bot.');
       return;
     }
-    e.respond(Postman.getEmbed('Getting rank for $name...'));
+    await e.respond(Postman.getEmbed('Getting rank for $name...'));
     try {
       final rank =
           await RankManager().getRank(userId, guildId, tag, hasNitro: hasNitro);

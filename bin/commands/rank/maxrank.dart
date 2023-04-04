@@ -12,9 +12,10 @@ class MaxRankRommand extends DiscordCommand {
 
   @override
   handle(ISlashCommandInteractionEvent e) async {
-    final guildId = e.interaction.guild!.id.id;
+    final guildId = e.interaction.guild!.id.toString();
     final rankCounter = await DataManager().getRankCounter(guildId: guildId);
     final maxRank = (100 + 0.01 * rankCounter).floor();
-    e.respond(Postman.getEmbed('The current max rank is $maxRank. Number of ranks: $rankCounter'));
+    e.respond(Postman.getEmbed(
+        'The current max rank is $maxRank. Number of ranks: $rankCounter'));
   }
 }

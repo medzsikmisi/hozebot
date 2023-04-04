@@ -13,6 +13,7 @@ import '../commands/rank/rank.dart';
 import '../commands/rank/ranklist.dart';
 import '../commands/tools/avatar.dart';
 import '../commands/tools/ping.dart';
+import '../commands/tools/reset.dart';
 import '../commands/tools/schedule.dart';
 import '../commands/zumi/zumijoin.dart';
 import 'data_manager.dart';
@@ -31,6 +32,7 @@ class Hoze {
     await DataManager.init();
     Hoze.cron.schedule(Schedule.parse('* * * * *'), _checkMessages);
     final token = Platform.environment['DC_TOKEN'].toString();
+
     _bot =
         NyxxFactory.createNyxxWebsocket(token, GatewayIntents.allUnprivileged)
           ..registerPlugin(Logging()) // Default logging plugin
@@ -59,6 +61,7 @@ class Hoze {
       ..registerSlashCommand(ScheduleCommand())
       ..registerSlashCommand(PingCommand())
       ..registerSlashCommand(JokeCommand())
+      ..registerSlashCommand(ResetRanklistCommand())
       //..registerSlashCommand(DogCommand())
       ..syncOnReady();
   }
