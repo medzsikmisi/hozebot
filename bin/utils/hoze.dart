@@ -6,6 +6,12 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../commands/fun/joke.dart';
+import '../commands/gif/interaction/congratulation.dart';
+import '../commands/gif/interaction/highfive.dart';
+import '../commands/gif/interaction/hug.dart';
+import '../commands/gif/interaction/kiss.dart';
+import '../commands/gif/interaction/punch.dart';
+import '../commands/gif/interaction/slap.dart';
 import '../commands/headOrTail/head.dart';
 import '../commands/headOrTail/tail.dart';
 import '../commands/media/cat.dart';
@@ -16,8 +22,8 @@ import '../commands/rank/ranklist.dart';
 import '../commands/tools/avatar.dart';
 import '../commands/tools/ping.dart';
 import '../commands/tools/reset.dart';
+import '../commands/tools/response_time.dart';
 import '../commands/tools/schedule.dart';
-import '../commands/zumi/zumijoin.dart';
 import 'data_manager.dart';
 import 'scheduler.dart';
 
@@ -59,13 +65,20 @@ class Hoze {
       ..registerSlashCommand(HeadCommand())
       ..registerSlashCommand(TailCommand())
       ..registerSlashCommand(MaxRankRommand())
-      ..registerSlashCommand(JoinCommand())
+      //..registerSlashCommand(JoinCommand())
       ..registerSlashCommand(ScheduleCommand())
       ..registerSlashCommand(PingCommand())
       ..registerSlashCommand(JokeCommand())
       ..registerSlashCommand(ResetRanklistCommand())
       ..registerSlashCommand(DogCommand())
       ..registerSlashCommand(CatCommand())
+      ..registerSlashCommand(SlapCommand())
+      ..registerSlashCommand(HugCommand())
+      ..registerSlashCommand(KissCommand())
+      ..registerSlashCommand(CongratulationCommand())
+      ..registerSlashCommand(HighFiveCommand())
+      ..registerSlashCommand(PunchCommand())
+      ..registerSlashCommand(ResponseTimeCommand())
       ..syncOnReady();
   }
 

@@ -4,6 +4,7 @@ services:
     build: .
     environment:
       DC_TOKEN: "${DC_TOKEN}"
+      GIPHY: "${GIPHY}"
     volumes:
       - ./hozedata:/root/hozedata
 
