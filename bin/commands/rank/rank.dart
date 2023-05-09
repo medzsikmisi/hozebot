@@ -4,7 +4,7 @@ import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../../errors.dart';
 import '../../utils/hoze.dart';
-import '../../utils/postman.dart';
+import '../../utils/postman/postman.dart';
 import '../../utils/rankmanager.dart';
 import '../command.dart';
 
@@ -42,13 +42,14 @@ class RankCommand extends DiscordCommand {
       name = member.nickname;
       name ??= (await member.user.getOrDownload()).username;
     } else {
-      Postman.sendError(e);
+      Postman(e).sendError('', static: true);
+
       Logger('RankCommand').log(Level.SHOUT,
           'ERROR => RANKCOMMAND :: handle() :: e.interaction.memberAuthor?.id.id = null');
       return;
     }
     if (userId == null) {
-      Postman.sendError(e);
+      Postman(e).sendError('', static: true);
       return;
     }
     final isBot = await checkIfBot(userId, e);
@@ -56,26 +57,30 @@ class RankCommand extends DiscordCommand {
       Logger('RankCommand').log(Level.INFO, 'Rank command called on bot.');
       return;
     }
-    await e.respond(Postman.getEmbed('Getting rank for $name...'));
+    final postman = Postman(e)
+      ..setDefaultColor()
+      ..setDescription('Getting rank for $name...');
+    await postman.send();
+
     try {
       final rank =
           await RankManager().getRank(userId, guildId, tag, hasNitro: hasNitro);
-      e.getOriginalResponse().then(
-          (value) => value.edit(Postman.getEmbed("$name's rank is $rank.")));
+      postman
+        ..setDescription("$name's rank is $rank.")
+        ..editOriginal();
     } catch (err) {
       if (err is CannotRankError) {
         final nextRank = err.nextRank;
 
         final nextRankString =
             nextRank.toString().substring(0, nextRank.toString().length - 4);
-        e
-            .getOriginalResponse()
-            .then((value) => value
-                .edit(Postman.getEmbed('Try again after $nextRankString.')))
-            .then(
-                (_) => Future.delayed(Duration(seconds: 10), () => e.deleteOriginalResponse()));
+        postman
+          ..setDescription('Try again after $nextRankString.')
+          ..setTimeOut(Duration(seconds: 10))
+          ..editOriginal();
+        return;
       }
-      Postman.sendError(e);
+      postman.sendError('', static: true);
     }
   }
 
@@ -90,8 +95,11 @@ class RankCommand extends DiscordCommand {
     final botInstance = Hoze.instance;
     final user = await botInstance.fetchUser(Snowflake(id));
     if (user.bot == true) {
-      e.respond(Postman.getEmbed(
-          "Bots are always better than humans. That's why y'all lose. (Spoiler alert)"));
+      Postman(e)
+        ..setDefaultColor()
+        ..setDescription(
+            "Nice try but bots are always better than humans.")
+        ..send();
       return true;
     }
     return false;

@@ -1,7 +1,7 @@
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../../utils/data_manager.dart';
-import '../../utils/postman.dart';
+import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class RanklistCommand extends DiscordCommand {
@@ -13,8 +13,13 @@ class RanklistCommand extends DiscordCommand {
   handle(ISlashCommandInteractionEvent e) async {
     final guildId = e.interaction.guild!.id.id;
     final ranklist = await DataManager().getRankList(guildId: guildId);
+    final postman = Postman(e)..setDefaultColor();
+
     if (ranklist.isEmpty) {
-      e.respond(Postman.getEmbed('No rank found.'));
+      postman
+        ..setDescription('No rank found.')
+        ..setTimeOut(Duration(seconds: 10))
+        ..send();
       return;
     }
     List<String> displayedRanklist = [];
@@ -24,10 +29,10 @@ class RanklistCommand extends DiscordCommand {
           '**$i.** <@${ranklistEntry.item1}> (*${ranklistEntry.item2}*)${i == 1 ? " 👑" : ""}');
       i++;
     }
-    e
-        .respond(Postman.getEmbed(displayedRanklist.join('\n'),
-            title: '**Ranklist 🏆**'))
-        .then((_) => Future.delayed(
-            Duration(minutes: 1), () => e.deleteOriginalResponse()));
+    postman
+      ..setTitle('**Ranklist 🏆**')
+      ..setDescription(displayedRanklist.join('\n'))
+      ..setTimeOut(Duration(minutes: 1))
+      ..send();
   }
 }
