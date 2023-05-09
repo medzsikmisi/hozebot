@@ -54,7 +54,7 @@ class RankManager {
 
   ///  This method calculates a rank. The higher number has less chance.
   int calculateRank({required int rankCounter}) {
-    final maxRank = 100 + rankCounter * 0.01.floor();
+    final maxRank = 100 + rankCounter * 0.03.floor();
     final random = Random();
     int num = random
         .nextInt(maxRank + 1); // generate a random number between 0 and max
@@ -75,35 +75,5 @@ class RankManager {
         : calculateRank(rankCounter: rankCounter);
   }
 
-  int calculateRankOld({required int rankCounter}) {
-    final range = Xrandom().nextInt(10000);
-    final maxRank = 100 + rankCounter * 0.01.floor();
-    int? rank;
-    if (range == 10000) {
-      return maxRank;
-    } else if (range > 9800) {
-      rank = Xrandom().nextInt((maxRank * 0.8).floor());
-    } else if (range > 9300) {
-      rank = Xrandom().nextInt((maxRank * 0.75).floor());
-    } else if (range > 8500) {
-      rank = Xrandom().nextInt((maxRank * 0.5).floor());
-    } else if (range > 7500) {
-      rank = Xrandom().nextInt((maxRank * 0.3).floor());
-    } else {
-      rank = Xrandom().nextInt((maxRank * 0.15).floor());
-    }
-    if (rank > 30) {
-      final bool1 = Xrandom().nextBool();
-      final bool2 = Xrandom().nextBool();
-      if (bool1 || bool2) {
-        rank = calculateRank(rankCounter: rankCounter);
-      }
-      /*final rerollChance = Xrandom().nextDouble();
-      if (rerollChance<0.7) {
-        rank = calculateRank(rankCounter: rankCounter);
-      }*/
-    }
-    Logger('RankManager').log(Level.INFO, 'New rank: $rank');
-    return rank;
-  }
+
 }
