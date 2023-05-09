@@ -2,7 +2,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../../utils/hoze.dart';
-import '../../utils/postman.dart';
+import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class JoinCommand extends DiscordCommand {
@@ -18,14 +18,18 @@ class JoinCommand extends DiscordCommand {
                   CommandOptionType.string, 'neptun', 'Írd be a neptun kódod.',
                   required: true),
             ],
-            guild: Snowflake(Hoze.test?'806667383997333525':'753505407904776214')) {
+            guild: Snowflake(
+                Hoze.test ? '806667383997333525' : '753505407904776214')) {
     registerHandler(handle);
   }
 
   @override
   handle(ISlashCommandInteractionEvent e) async {
-    e.respond(Postman.getEmbed(
-        'Ha nem kapsz rangot 2 napon belül, akkor pingeld ezt a rangot: <@&811701870636171274>'));
+    Postman(e)
+      ..setDefaultColor()
+      ..setDescription(
+          'Ha nem kapsz rangot 2 napon belül, akkor pingeld ezt a rangot: <@&811701870636171274>')
+      ..send();
     final guild = await e.interaction.guild!.getOrDownload();
     final bool channelExists =
         guild.channels.any((channel) => channel.name == 'join');
@@ -40,7 +44,9 @@ class JoinCommand extends DiscordCommand {
     }
     final name = e.getArg('name').value;
     final neptun = e.getArg('neptun').value;
-    channel.sendMessage(Postman.getEmbed('Név: *$name*\nNeptun-kód: *$neptun*',
-        title: '**Új csatlakozási kérelem**'));
+    Postman.sendToChannel(
+        embeddedMessage: 'Név: *$name*\nNeptun-kód: *$neptun*',
+        embeddedTitle: '**Új csatlakozási kérelem**',
+        channel: channel);
   }
 }

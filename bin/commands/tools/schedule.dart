@@ -1,7 +1,7 @@
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
 import '../../models/todo.dart';
-import '../../utils/postman.dart';
+import '../../utils/postman/postman.dart';
 import '../../utils/scheduler.dart';
 import '../command.dart';
 
@@ -43,10 +43,10 @@ class ScheduleCommand extends DiscordCommand {
     Future.delayed(Duration.zero, () async {
       await MessageScheduler().saveMessage(message, scheduleTime);
     });
-     e.respond(
-        Postman.getEmbed(
-            'Your message is saved. It will be delivered at ${scheduleTime.toString().substring(0, scheduleTime.toString().length - 7)}'),
-        hidden: true);
-
+    Postman(e)
+      ..setDefaultColor()
+      ..setDescription(
+          'Your message is saved. It will be delivered at ${scheduleTime.toString().substring(0, scheduleTime.toString().length - 7)}')
+      ..send();
   }
 }

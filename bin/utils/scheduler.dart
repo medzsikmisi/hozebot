@@ -6,7 +6,7 @@ import 'package:nyxx/nyxx.dart';
 import '../models/todo.dart';
 import 'data_manager.dart';
 import 'hoze.dart';
-import 'postman.dart';
+import 'postman/postman.dart';
 
 class MessageScheduler {
   Future<void> checkMessages() async {
@@ -46,8 +46,11 @@ class MessageScheduler {
       name ??= authorUser.username;
       avatarUrl ??= authorUser.avatarUrl();
     }
-    dstChannel.sendMessage(Postman.getEmbed(message.message,
-        authorName: name, authorIconUrl: avatarUrl));
+    Postman.sendToChannel(
+        embeddedMessage: message.message,
+        embeddedAuthorName: name,
+        embeddedAuthorPicture: avatarUrl,
+        channel: dstChannel);
   }
 
   Future<void> saveMessage(ToDoMessage message, DateTime when) {

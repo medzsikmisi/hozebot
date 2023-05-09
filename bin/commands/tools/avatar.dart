@@ -2,7 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../../utils/postman.dart';
+import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class AvatarCommand extends DiscordCommand {
@@ -16,16 +16,18 @@ class AvatarCommand extends DiscordCommand {
 
   @override
   handle(ISlashCommandInteractionEvent e) async {
-    Future.delayed(Duration.zero, () async {
-      await e.respond(Postman.getEmbed('One sec...'));
-    });
+    final postman = Postman(e);
+    postman
+      ..setDefaultColor()
+      ..setDescription('One sec...');
+    await postman.send();
     IMember user;
     if (e.args.isEmpty) {
       user = e.interaction.memberAuthor!;
     } else {
       final String? userId = e.getArg('user').value;
       if (userId == null) {
-        Postman.sendError(e);
+        postman.sendError('', static: true);
         return;
       }
       final guild = await e.interaction.guild!.getOrDownload();
@@ -39,7 +41,11 @@ class AvatarCommand extends DiscordCommand {
       avatarUrl = globalUser.avatarUrl(size: 1024);
     }
     Logger('AvatarCommand').log(Level.INFO, 'avatarUrl:$avatarUrl');
-    await Postman.sendPictureFromUrl(e, avatarUrl,
-        title: '$username\'s avatar:',timeout:Duration(minutes: 5));
+    postman
+      ..deleteDescription()
+      ..setTitle('$username\'s avatar:')
+      ..setImageUrl(avatarUrl)
+      ..setTimeOut(Duration(minutes: 2))
+      ..editOriginal();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-class Postman {
+class PostmanOld {
   static MessageBuilder getMessage(final String message) {
     return MessageBuilder.content(message);
   }

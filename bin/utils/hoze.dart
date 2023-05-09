@@ -24,6 +24,7 @@ import '../commands/tools/ping.dart';
 import '../commands/tools/reset.dart';
 import '../commands/tools/response_time.dart';
 import '../commands/tools/schedule.dart';
+import '../commands/zumi/zumijoin.dart';
 import 'data_manager.dart';
 import 'scheduler.dart';
 
@@ -65,7 +66,7 @@ class Hoze {
       ..registerSlashCommand(HeadCommand())
       ..registerSlashCommand(TailCommand())
       ..registerSlashCommand(MaxRankRommand())
-      //..registerSlashCommand(JoinCommand())
+      ..registerSlashCommand(JoinCommand())
       ..registerSlashCommand(ScheduleCommand())
       ..registerSlashCommand(PingCommand())
       ..registerSlashCommand(JokeCommand())
@@ -79,6 +80,7 @@ class Hoze {
       ..registerSlashCommand(HighFiveCommand())
       ..registerSlashCommand(PunchCommand())
       ..registerSlashCommand(ResponseTimeCommand())
+      //..registerSlashCommand(RandomNumberCommand())
       ..syncOnReady();
   }
 
