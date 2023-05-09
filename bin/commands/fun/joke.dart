@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
-import 'package:nyxx_interactions/src/events/interaction_event.dart';
 
-import '../../utils/postman.dart';
+import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class JokeCommand extends DiscordCommand {
@@ -35,22 +34,28 @@ class JokeCommand extends DiscordCommand {
     if (response.statusCode != 200) {
       print('request success');
       print(response.data);
-      Postman.sendError(e);
+      Postman(e).sendError('', static: true);
       return;
     }
 
     if (response.data['type'] == 'single') {
       print('single');
       final joke = response.data['joke'];
-      e.respond(Postman.getEmbed(joke));
+      Postman(e)
+        ..setDefaultColor()
+        ..setDescription(joke)
+        ..send();
     } else if (response.data['type'] == 'twopart') {
       print('twopart');
       final part1 = response.data['setup'];
       final part2 = response.data['delivery'];
-      e.respond(Postman.getEmbed('$part1\n||$part2||'));
+      Postman(e)
+        ..setDefaultColor()
+        ..setDescription('$part1\n||$part2||')
+        ..send();
     } else {
       print('neither');
-      Postman.sendError(e);
+      Postman(e).sendError('', static: true);
       return;
     }
   }

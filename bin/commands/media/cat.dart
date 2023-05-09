@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_interactions/nyxx_interactions.dart';
 
-import '../../utils/postman.dart';
+import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class CatCommand extends DiscordCommand {
@@ -13,9 +12,17 @@ class CatCommand extends DiscordCommand {
   @override
   handle(ISlashCommandInteractionEvent e) {
     Future.delayed(Duration.zero, () async {
-      await e.respond(Postman.getEmbed('Loading...'));
+      final postman = Postman(e);
+      postman
+        ..setDefaultColor()
+        ..setDescription('Loading...');
+      await postman.send();
+
       final url = await getUrl();
-      e.getOriginalResponse().then((_) => _.edit(MessageBuilder.embed(Postman.getImageEmbed('https://cataas.com$url'))));
+      postman
+        ..deleteDescription()
+        ..setImageUrl('https://cataas.com$url')
+        ..editOriginal();
     });
   }
 
