@@ -20,7 +20,7 @@ class DogCommand extends DiscordCommand {
       final url = await getUrl();
       postman
         ..deleteDescription()
-        ..setImageUrl('https://cataas.com$url')
+        ..setImageUrl(url)
         ..editOriginal();
     });
   }
