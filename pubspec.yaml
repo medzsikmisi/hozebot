@@ -1,6 +1,6 @@
 name: hozebot2
 description: A sample command-line application.
-version: 1.0.2
+version: 1.1.0
 # homepage: https://www.example.com
 
 environment:
@@ -14,13 +14,10 @@ dependencies:
   nyxx: ^5.0.1
   nyxx_interactions: ^4.6.0
   tuple: ^2.0.1
-  openai_client: ^0.0.7
   xrandom: ^0.7.2
 
 
 
 dev_dependencies:
-  envify_generator: any
-  build_runner: any
   lints: ^2.0.1
   test: ^1.24.0
