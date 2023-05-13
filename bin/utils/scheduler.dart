@@ -14,7 +14,7 @@ class MessageScheduler {
     final box = await DataManager().getScheduledMessages();
     final toDos = box.keys.cast<String>().where((_) =>
         DateTime.fromMillisecondsSinceEpoch(int.parse(_))
-            .isBefore(DateTime.now().add(Duration(hours: 1))));
+            .isBefore(DateTime.now()));
     return Future.delayed(Duration.zero, () {
       for (final todo in toDos) {
         final message = ToDoMessage.parse(box.get(todo, defaultValue: {}));
