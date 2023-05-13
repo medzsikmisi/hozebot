@@ -34,7 +34,7 @@ class ScheduleCommand extends DiscordCommand {
         userId: user);
     final hour = e.getArg('hour').value as int;
     final minute = e.getArg('minute').value as int;
-    final DateTime now = DateTime.now().add(Duration(hours: 1));
+    final DateTime now = DateTime.now();
     DateTime scheduleTime =
         DateTime(now.year, now.month, now.day, hour, minute);
     if (now.hour > hour || (now.hour == hour && now.minute + 1 > minute)) {
