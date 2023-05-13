@@ -45,6 +45,7 @@ class ScheduleCommand extends DiscordCommand {
     });
     Postman(e)
       ..setDefaultColor()
+      ..setToPrivate()
       ..setDescription(
           'Your message is saved. It will be delivered at ${scheduleTime.toString().substring(0, scheduleTime.toString().length - 7)}')
       ..send();
