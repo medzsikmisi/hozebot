@@ -10,6 +10,7 @@ class Postman {
   EmbedBuilder? _embed;
   Duration? _timeout;
   bool sent;
+  bool _private = false;
   static const EMBEDCOLOR = '#e7c97b';
 
   Postman(this._event, {String? message, bool isEmbed = true})
@@ -48,6 +49,8 @@ class Postman {
 
   void setDescription(String? description) => _embed?.description = description;
 
+  void setToPrivate() => _private = true;
+
   void deleteDescription() => _embed?.description = null;
 
   Future<void> sendError(String error, {bool static = false}) {
@@ -71,10 +74,12 @@ class Postman {
     final timeout = _timeout;
     if (!_isEmbed) {
       if (timeout == null) {
-        return _event.respond(MessageBuilder.content(_message.toString()));
+        return _event.respond(MessageBuilder.content(_message.toString()),
+            hidden: _private);
       }
       return _event
-          .respond(MessageBuilder.content(_message.toString()))
+          .respond(MessageBuilder.content(_message.toString()),
+              hidden: _private)
           .then((_) {
         Future.delayed(timeout, () => _event.deleteOriginalResponse());
       });
@@ -82,10 +87,12 @@ class Postman {
       if (!isDescriptionSet()) setDescription(_message);
       if (timeout == null) {
         sent = true;
-        return _event.respond(MessageBuilder.embed(_embed!));
+        return _event.respond(MessageBuilder.embed(_embed!), hidden: _private);
       }
       sent = true;
-      return _event.respond(MessageBuilder.embed(_embed!)).then((_) {
+      return _event
+          .respond(MessageBuilder.embed(_embed!), hidden: _private)
+          .then((_) {
         Future.delayed(timeout, () => _event.deleteOriginalResponse());
       });
     }
