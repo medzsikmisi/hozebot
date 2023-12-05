@@ -7,15 +7,15 @@ import '../command.dart';
 
 class ScheduleCommand extends DiscordCommand {
   ScheduleCommand()
-      : super('schedule', 'You can send a message at a different time.', [
-          CommandOptionBuilder(CommandOptionType.string, 'message',
-              'The message you want to schedule.',
+      : super('időzítés', 'Üzenetet tudsz időzíteni.', [
+          CommandOptionBuilder(CommandOptionType.string, 'üzenet',
+              'Az üzenet, amit szeretnél időzíteni.',
               required: true),
-          CommandOptionBuilder(CommandOptionType.integer, 'hour',
-              'The hour you want to deliver the message.',
+          CommandOptionBuilder(CommandOptionType.integer, 'óra',
+              'Hány órára szeretnéd időzíteni?',
               required: true),
-          CommandOptionBuilder(CommandOptionType.integer, 'minute',
-              'The minute you want to deliver the message. (min 2 or it\'ll be delivered tomorrow)',
+          CommandOptionBuilder(CommandOptionType.integer, 'perc',
+              'Hány percre szeretnéd időzíteni? Minimum két perc mostantól, különben holnap küldi el.',
               required: true),
         ]) {
     registerHandler(handle);
@@ -23,7 +23,7 @@ class ScheduleCommand extends DiscordCommand {
 
   @override
   handle(ISlashCommandInteractionEvent e) async {
-    final messageTest = e.getArg('message').value;
+    final messageTest = e.getArg('üzenet').value;
     final user = e.interaction.memberAuthor!.id;
     final channel = (await e.interaction.channel.getOrDownload()).id;
     final guild = (await e.interaction.guild!.getOrDownload()).id;
@@ -32,8 +32,8 @@ class ScheduleCommand extends DiscordCommand {
         guildId: guild,
         channelId: channel,
         userId: user);
-    final hour = e.getArg('hour').value as int;
-    final minute = e.getArg('minute').value as int;
+    final hour = e.getArg('óra').value as int;
+    final minute = e.getArg('perc').value as int;
     final DateTime now = DateTime.now();
     DateTime scheduleTime =
         DateTime(now.year, now.month, now.day, hour, minute);

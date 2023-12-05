@@ -11,15 +11,15 @@ abstract class InteractionCommand extends DiscordCommand {
 
   InteractionCommand(String name, String dsc, this.action)
       : super(name, dsc, [
-          CommandOptionBuilder(CommandOptionType.user, 'member',
-              'Tag the member you want to $name',
+          CommandOptionBuilder(CommandOptionType.user, 'barát',
+              'A barátod, akivel ezt akarod csinálni: $name',
               required: true)
         ]);
 
   @override
   handle(ISlashCommandInteractionEvent e) async {
     if (e.args.isEmpty) {
-      Postman(e).sendError('Missing user.');
+      Postman(e).sendError('Jelölj meg valakit!');
       return;
     }
     final userId = e.args.first.value;

@@ -6,14 +6,16 @@ import '../command.dart';
 
 class ResetRanklistCommand extends DiscordCommand {
   ResetRanklistCommand()
-      : super('datareset',
-            'With the right permission, resets the leaderboard data.', []);
+      : super(
+            'adattörlés',
+            'A megfelelő engedéllyel törölheted az adatbázist. (veszélyes!)',
+            []);
 
   @override
   handle(ISlashCommandInteractionEvent e) {
     final author = e.interaction.userAuthor?.id.toString();
     if (author != '737043082704584855') {
-      Postman(e).sendError('You do not have the correct permission.');
+      Postman(e).sendError('Ehhez a parancshoz nincs engedélyed!');
       return;
     }
     final postman = Postman(e)
@@ -22,7 +24,7 @@ class ResetRanklistCommand extends DiscordCommand {
     postman.send().then((_) {
       DataManager.reset();
       postman
-        ..setDescription('Ranklist deleted successfully.')
+        ..setDescription('Sikeres törlés.')
         ..editOriginal();
     });
   }

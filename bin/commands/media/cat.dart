@@ -5,7 +5,7 @@ import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class CatCommand extends DiscordCommand {
-  CatCommand() : super('cat', 'Get an image of a cat.', []) {
+  CatCommand() : super('cica', 'Macskás képet tudsz kérni.', []) {
     registerHandler(handle);
   }
 
@@ -15,7 +15,7 @@ class CatCommand extends DiscordCommand {
       final postman = Postman(e);
       postman
         ..setDefaultColor()
-        ..setDescription('Loading...');
+        ..setDescription('Egy pillanat...');
       await postman.send();
 
       final url = await getUrl();

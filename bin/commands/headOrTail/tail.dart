@@ -6,7 +6,7 @@ import '../../utils/rankmanager.dart';
 import '../command.dart';
 
 class TailCommand extends DiscordCommand {
-  TailCommand() : super('tail', 'Heads or tails. You choose tail.', []) {
+  TailCommand() : super('írás', 'Fej vagy írásban írást választasz.', []) {
     registerHandler(handle);
   }
 
@@ -16,8 +16,8 @@ class TailCommand extends DiscordCommand {
     Future.delayed(Duration(seconds: 1), () {
       Postman(e)
         ..setDefaultColor()
-        ..setTitle("It's ${result ? 'tail' : 'head'}.")
-        ..setDescription('You ${result ? "won.🫡" : "lost. 🙄"}')
+        ..setTitle(result ? 'Fej.' : 'Írás.')
+        ..setDescription(result ? "Nyertél.🫡" : "Vesztettél. 🙄")
         ..setTimeOut(Duration(seconds: 15))
         ..send();
 

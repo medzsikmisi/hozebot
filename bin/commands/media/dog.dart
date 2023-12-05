@@ -6,7 +6,7 @@ import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class DogCommand extends DiscordCommand {
-  DogCommand() : super('dog', 'You can get pictures of dogs.', []);
+  DogCommand() : super('kutya', 'Kutyás képet tudsz kérni', []);
 
   @override
   handle(ISlashCommandInteractionEvent e) {

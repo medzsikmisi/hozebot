@@ -5,7 +5,7 @@ import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class RanklistCommand extends DiscordCommand {
-  RanklistCommand() : super('leaderboard', 'Get the top 10 ranks.', []) {
+  RanklistCommand() : super('ranglista', 'A jelenlegi 10 legnagyobb rangot tudod lekérdezni', []) {
     registerHandler(handle);
   }
 
@@ -17,7 +17,7 @@ class RanklistCommand extends DiscordCommand {
 
     if (ranklist.isEmpty) {
       postman
-        ..setDescription('No rank found.')
+        ..setDescription('Nincs még egy rang sem.')
         ..setTimeOut(Duration(seconds: 10))
         ..send();
       return;
@@ -30,7 +30,7 @@ class RanklistCommand extends DiscordCommand {
       i++;
     }
     postman
-      ..setTitle('**Ranklist 🏆**')
+      ..setTitle('**Ranglista 🏆**')
       ..setDescription(displayedRanklist.join('\n'))
       ..setTimeOut(Duration(minutes: 1))
       ..send();

@@ -6,7 +6,7 @@ import '../command.dart';
 
 class MaxRankRommand extends DiscordCommand {
   MaxRankRommand()
-      : super('rmax', 'Get the current value of maximum rank value.', []) {
+      : super('maxrang', 'A jelenlegi maximum rang számot tudod lekérdezni', []) {
     registerHandler(handle);
   }
 
@@ -18,7 +18,7 @@ class MaxRankRommand extends DiscordCommand {
     Postman(e)
       ..setDefaultColor()
       ..setDescription(
-          'The current max rank is $maxRank. Number of ranks: $rankCounter')
+          'A mostani legnagyobb elérhető rang $maxRank. Eddig ennyiszer használták a parancsot: $rankCounter')
       ..setTimeOut(Duration(seconds: 15))
       ..send();
   }

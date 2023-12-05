@@ -6,16 +6,16 @@ import '../command.dart';
 
 class JokeCommand extends DiscordCommand {
   JokeCommand()
-      : super('joke', 'I send you joke if you use this command.', [
-          CommandOptionBuilder(CommandOptionType.string, 'type',
-              'You can get specific jokes if you select a category. Default is any. Uses the jokeapi.dev.',
+      : super('vicc', 'Angol nyelvű viccet tudsz kérni.', [
+          CommandOptionBuilder(CommandOptionType.string, 'típus',
+              'Tudod specifikálni, hogy milyen típusú viccet kapj. Alapértelmezetten bármilyen. A jokeapi.dev végpontot használja a program.',
               choices: [
-                ArgChoiceBuilder('Programming', 'Programming'),
-                ArgChoiceBuilder('Miscellaneous', 'Miscellaneous'),
-                ArgChoiceBuilder('Dark', 'Dark'),
-                ArgChoiceBuilder('Pun', 'Pun'),
-                ArgChoiceBuilder('Spooky', 'Spooky'),
-                ArgChoiceBuilder('Christmas', 'Christmas'),
+                ArgChoiceBuilder('Programozás', 'Programming'),
+                ArgChoiceBuilder('Egyéb', 'Miscellaneous'),
+                ArgChoiceBuilder('Sötét humor', 'Dark'),
+                ArgChoiceBuilder('Szóvicc', 'Pun'),
+                ArgChoiceBuilder('Ijesztő', 'Spooky'),
+                ArgChoiceBuilder('Karácsony', 'Christmas'),
               ])
         ]) {
     registerHandler(handle);
@@ -26,7 +26,7 @@ class JokeCommand extends DiscordCommand {
     String type = 'Any';
     print('checking args');
     if (e.args.isNotEmpty) {
-      type = e.getArg('type').value;
+      type = e.getArg('típus').value;
       print('type is $type');
     }
     print('type check: $type');

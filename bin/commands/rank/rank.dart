@@ -10,9 +10,9 @@ import '../command.dart';
 
 class RankCommand extends DiscordCommand {
   RankCommand()
-      : super('rank', 'Get a rank bro.', [
-          CommandOptionBuilder(CommandOptionType.user, 'user',
-              'If you want to get a rank for somebody else.')
+      : super('rang', 'Kapsz egy véletlenszerűen generált számot.', [
+          CommandOptionBuilder(CommandOptionType.user, 'barát',
+              'Jelöld meg, ha másnak szeretnéd lekérni.')
         ]) {
     registerHandler(handle);
   }
@@ -59,14 +59,14 @@ class RankCommand extends DiscordCommand {
     }
     final postman = Postman(e)
       ..setDefaultColor()
-      ..setDescription('Getting rank for $name...');
+      ..setDescription('Rang kérése neki: $name...');
     await postman.send();
 
     try {
       final rank =
           await RankManager().getRank(userId, guildId, tag, hasNitro: hasNitro);
       postman
-        ..setDescription("$name's rank is $rank.")
+        ..setDescription("$name rangja: $rank.")
         ..editOriginal();
     } catch (err) {
       if (err is CannotRankError) {
@@ -75,7 +75,7 @@ class RankCommand extends DiscordCommand {
         final nextRankString =
             nextRank.toString().substring(0, nextRank.toString().length - 4);
         postman
-          ..setDescription('Try again after $nextRankString.')
+          ..setDescription('Próbáld meg ezután: $nextRankString.')
           ..setTimeOut(Duration(seconds: 10))
           ..editOriginal();
         return;
@@ -98,7 +98,7 @@ class RankCommand extends DiscordCommand {
       Postman(e)
         ..setDefaultColor()
         ..setDescription(
-            "Nice try but bots are always better than humans.")
+            "Szép próbálkozás, de  a botok mindig is jobbak lesznek az embereknél ;)")
         ..send();
       return true;
     }

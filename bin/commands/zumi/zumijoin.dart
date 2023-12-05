@@ -8,11 +8,11 @@ import '../command.dart';
 class JoinCommand extends DiscordCommand {
   JoinCommand()
       : super(
-            'join',
+            'csatlakozás',
             'Ezzel szólsz az adminoknak, hogy akarsz méhecske rangot.',
             [
               CommandOptionBuilder(
-                  CommandOptionType.string, 'name', 'Írd be a neved.',
+                  CommandOptionType.string, 'név', 'Írd be a neved.',
                   required: true),
               CommandOptionBuilder(
                   CommandOptionType.string, 'neptun', 'Írd be a neptun kódod.',

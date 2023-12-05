@@ -7,9 +7,9 @@ import '../command.dart';
 
 class AvatarCommand extends DiscordCommand {
   AvatarCommand()
-      : super('avatar', 'Get a user\'s profile picture.', [
-          CommandOptionBuilder(CommandOptionType.user, 'user',
-              'The user who\'s picture you want.')
+      : super('profilép', 'Kérd le egy barátod profilképét nagyban.', [
+          CommandOptionBuilder(CommandOptionType.user, 'barát',
+              'Jelöld meg, akinek a profilképét szeretnéd látni.')
         ]) {
     registerHandler(handle);
   }
@@ -19,13 +19,13 @@ class AvatarCommand extends DiscordCommand {
     final postman = Postman(e);
     postman
       ..setDefaultColor()
-      ..setDescription('One sec...');
+      ..setDescription('Pillanat...');
     await postman.send();
     IMember user;
     if (e.args.isEmpty) {
       user = e.interaction.memberAuthor!;
     } else {
-      final String? userId = e.getArg('user').value;
+      final String? userId = e.getArg('barát').value;
       if (userId == null) {
         postman.sendError('', static: true);
         return;
@@ -43,7 +43,7 @@ class AvatarCommand extends DiscordCommand {
     Logger('AvatarCommand').log(Level.INFO, 'avatarUrl:$avatarUrl');
     postman
       ..deleteDescription()
-      ..setTitle('$username\'s avatar:')
+      ..setTitle('$username profilképe:')
       ..setImageUrl(avatarUrl)
       ..setTimeOut(Duration(minutes: 2))
       ..editOriginal();

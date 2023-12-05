@@ -4,7 +4,7 @@ import '../../utils/postman/postman.dart';
 import '../command.dart';
 
 class ResponseTimeCommand extends DiscordCommand {
-  ResponseTimeCommand() : super('responsetime', 'You can get the response time', []);
+  ResponseTimeCommand() : super('válaszidő', 'Le tudod kérdezni a chatbot válaszidejét', []);
 
   @override
   handle(ISlashCommandInteractionEvent e) {
@@ -12,7 +12,7 @@ class ResponseTimeCommand extends DiscordCommand {
     final diff = createdAt.difference(DateTime.now()).inMilliseconds.abs().toString();
     Postman(e)
       ..setDefaultColor()
-      ..setDescription('Ping: $diff ms')
+      ..setDescription('Válaszidő: $diff ms')
       ..send();
   }
 }

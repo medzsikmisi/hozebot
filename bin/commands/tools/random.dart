@@ -9,11 +9,11 @@ THIS CLASS IS CURRENTLY UNDER DEVELOPMENT
 
 class RandomNumberCommand extends DiscordCommand {
   RandomNumberCommand()
-      : super('rnd', 'Generates a random number', [ CommandOptionBuilder(
-      CommandOptionType.number, 'max', 'Set the maximum value.',
+      : super('szám', 'Véletlenszerű szám generálása', [ CommandOptionBuilder(
+      CommandOptionType.number, 'maximium', 'Állítsd be a maximum értéket.',
       required: true, min: -10000000, max: 10000000),
           CommandOptionBuilder(CommandOptionType.number, 'min',
-              'Set the minimum value. (default is 0)',
+              'Állítsd be a minimum értéket (alapból 0)',
               min: -10000000, max: 10000000),
 
         ]) {
@@ -22,10 +22,10 @@ class RandomNumberCommand extends DiscordCommand {
 
   @override
   handle(ISlashCommandInteractionEvent e) {
-    final min = e.getArg('min').value ?? 0;
-    final max = e.getArg('max').value;
+    final min = e.getArg('minimum').value ?? 0;
+    final max = e.getArg('maximum').value;
     if (max <= min) {
-      Postman(e).sendError('Wrong usage. max<=min');
+      Postman(e).sendError('Rosszul használtad. max<=min');
 
       return;
     }
@@ -33,7 +33,7 @@ class RandomNumberCommand extends DiscordCommand {
     double number = rnd.nextDouble();
     Postman(e)
       ..setDefaultColor()
-      ..setDescription('Your random number is $number')
+      ..setDescription('A számod ennyi lett: $number')
       ..send();
   }
 }
